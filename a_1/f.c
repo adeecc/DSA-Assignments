@@ -1,11 +1,3 @@
-/*
- * Code must be run with the -lm flag
- * This is to allow the use of the math library
- * Without the compiler flag there is the following compilrer error:
- * "undefined reference to `log10'"
-
-*/
-
 #include <stdio.h>
 #include <stdint.h>
 #include <math.h>
@@ -19,13 +11,6 @@ void simpleSieve(uint64_t limit, uint8_t prime[]) {
 }
 
 void updateDigitFrequency(uint64_t num) {
-    // uint8_t n = log10((double)num) + 1;
-
-    // for (int i = 0; i < n; ++i) {
-    //     digit_frequency[num % 10]++;
-    //     num /= 10;
-    // }
-
     while (num) {
         digit_frequency[num % 10]++;
         num /= 10;

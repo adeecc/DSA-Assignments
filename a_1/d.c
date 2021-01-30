@@ -2,31 +2,38 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int increasing_compare(const void* a, const void* b) {
-    return (*(int*)a - *(int*)b);
+uint32_t m, n, prices[25], max = 0, temp;
+
+int quantFromSubset(uint16_t combination) {
+    uint32_t count = 0, total = 0;
+    for (int i = 0; i < n; ++i) {
+        total += (combination & 1) * prices[i];
+        count += (combination & 1);
+
+        combination >>= 1;
+    }
+    
+    return total > m ? 0 : count;
 }
 
 int main() {
-    uint32_t m, n, prices[25], count = 0, total = 0;
-
+    
     scanf("%d%*c%d", &m, &n);
 
     for (int i = 0; i < n; ++i) {
         scanf("%d%*c", prices + i);
     }
 
-    qsort(prices, n, sizeof(uint32_t), increasing_compare);
+    for (int i = 0; i < (1 << n); ++i) {
+        temp = quantFromSubset(i);
 
-    for (int i = 0; i < n; ++i) {
-        total += prices[i];
-
-        if (total <= m)
-            count++;
-        else
-            break;
+        if (temp > max) {
+            max = temp;
+        }
     }
 
-    printf("%d\n", count);
+    
+    printf("%d", max);
 
     return 0;
 }

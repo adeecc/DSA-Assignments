@@ -1,49 +1,43 @@
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-struct Node
-{
+struct Node {
     uint32_t data;
     struct Node* next;
     struct Node* prev;
 };
 
-void push(struct Node** head_ref, int data ) {
-    struct Node* node = (struct Node*)malloc(sizeof(struct Node)); 
- 
-    node->data = data; 
- 
-    node->next = (*head_ref); 
-    node->prev = NULL; 
- 
-    if ((*head_ref) != NULL) 
-        (*head_ref)->prev = node; 
- 
+void push(struct Node** head_ref, int data) {
+    struct Node* node = (struct Node*)malloc(sizeof(struct Node));
+
+    node->data = data;
+
+    node->next = (*head_ref);
+    node->prev = NULL;
+
+    if ((*head_ref) != NULL) (*head_ref)->prev = node;
+
     (*head_ref) = node;
 }
 
-void append(struct Node** head_ref, int data)
-{
-
+void append(struct Node** head_ref, int data) {
     struct Node* node = (struct Node*)malloc(sizeof(struct Node));
-    struct Node* last = *head_ref; 
- 
-    
+    struct Node* last = *head_ref;
+
     node->data = data;
 
     node->next = NULL;
- 
+
     if ((*head_ref) == NULL) {
         node->prev = NULL;
         *head_ref = node;
         return;
     }
- 
-    while (last->next != NULL)
-        last = last->next;
- 
+
+    while (last->next != NULL) last = last->next;
+
     last->next = node;
     node->prev = last;
 }
@@ -61,8 +55,7 @@ void LS(struct Node** head_ref, int lsb) {
     struct Node* last = *head_ref;
     struct Node* node = (struct Node*)malloc(sizeof(struct Node));
 
-    while(last->next != NULL)
-        last = last->next;
+    while (last->next != NULL) last = last->next;
 
     node->data = lsb;
     node->next = NULL;
@@ -71,6 +64,7 @@ void LS(struct Node** head_ref, int lsb) {
     node->prev = last;
 
     (*head_ref) = (*head_ref)->next;
+    (*head_ref)->prev = NULL;
 }
 
 void RS(struct Node** head_ref, int msb) {
@@ -79,18 +73,22 @@ void RS(struct Node** head_ref, int msb) {
     node->data = msb;
 
     node->next = (*head_ref);
-    node->prev = NULL;
+    (*head_ref)->prev = node;
 
+    node->prev = NULL;
     (*head_ref) = node;
+
+    if ((*head_ref)->next == NULL) {
+        free(*head_ref);
+        return;
+    }
 
     struct Node* second_last = *head_ref;
 
-    while (second_last->next->next != NULL) 
-        second_last = second_last->next;
-    
+    while (second_last->next->next != NULL) second_last = second_last->next;
+
     free(second_last->next);
     second_last->next = NULL;
-
 }
 
 void LR(struct Node** head_ref) {
@@ -101,64 +99,98 @@ void LR(struct Node** head_ref) {
 void RR(struct Node** head_ref) {
     struct Node* last = *head_ref;
 
-    while(last->next != NULL)
-        last = last->next;
+    while (last->next != NULL) last = last->next;
 
     RS(head_ref, last->data);
 }
 
 void INC(struct Node** head_ref) {
-    uint32_t carry = 0, a, b;
+    uint32_t carry = 1, a, b;
 
     struct Node* last = *head_ref;
-    while(last->next != NULL)
-        last = last->next;
+    while (last->next != NULL) last = last->next;
 
-
-    carry = last->data;
-    last->data = !last->data;
-
-    printf("S: %d, C: %d\n", last->data, carry);
-
-    while (last->prev != NULL) {
+    while (1) {
         a = last->data;
         b = carry;
 
-        carry = a * b; 
+        carry = a & b;
         last->data = a ^ b;
 
-        printf("S: %d, C: %d\n", last->data, carry);
-
+        if (last->prev == NULL) break;
         last = last->prev;
     }
 
-    traverse(last);
-
-    (*head_ref) = last;    
+    (*head_ref) = last;
 }
 
 void DEC(struct Node** head_ref) {
 
+    uint32_t carry = 0, a, b = 1, Cin;
+
+    struct Node* last = *head_ref;
+    while (last->next != NULL) last = last->next;
+
+    while (1) {
+        a = last->data;
+        Cin = carry;
+
+        carry = a & b | a & Cin | b & Cin;
+        last->data = a ^ b ^ Cin;
+
+        if (last->prev == NULL) break;
+        last = last->prev;
+    }
+
+    (*head_ref) = last;
 }
 
 int main() {
-    char bits[1000];
-    scanf("%s%*c", bits);
-
-    int len = strlen(bits);
-    printf("String Length: %d\n", len);
+    int len = 0,  n;
+    char c, instruction;
 
     struct Node* head = NULL;
 
-    for (int i = 0; i < len; ++i) {
-        append(&head, (int)bits[i] - (int)'0');
+    while (1) {
+        scanf("%c", &c);
+
+        if (c == '\n') break;
+
+        append(&head, c - '0');
+        len++;
     }
 
-    // LS(&head, 0);
+    scanf("%d%*c", &n);
 
-    // RS(&head, 0);
-    INC(&head);
+    for (int i = 0; i < n; ++i) {
+        scanf("%c", &instruction);
 
-    traverse(head);
+        if (instruction == 'L') {
+            scanf("%c%*c", &instruction);
+
+            if (instruction == 'S') 
+                LS(&head, 0);
+             else if (instruction == 'R') 
+                LR(&head);
+            
+        } else if (instruction == 'R') {
+            scanf("%c%*c", &instruction);
+            
+            if (instruction == 'S') 
+                RS(&head, 0);
+             else if (instruction == 'R') 
+                RR(&head);
+
+        } else if (instruction == 'I') {
+            scanf("%*c%*c%*c");
+            INC(&head);
+        } else if (instruction == 'D') {
+            scanf("%*c%*c%*c");
+            DEC(&head);
+        }
+    }
+
+    traverse(head);    
+
     return 0;
 }
