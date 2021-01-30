@@ -1,0 +1,122 @@
+{
+  // Place your dsa workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and
+  // description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope
+  // is left empty or omitted, the snippet gets applied to all languages. The prefix is what is
+  // used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+  // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders.
+  // Placeholders with the same ids are connected.
+  // Example:
+  // "Print to console": {
+  // 	"scope": "javascript,typescript",
+  // 	"prefix": "log",
+  // 	"body": [
+  // 		"console.log('$1');",
+  // 		"$2"
+  // 	],
+  // 	"description": "Log output to console"
+  // }
+  "base": {
+    "prefix": "base",
+    "body": [
+      "#include <stdio.h>",
+      "#include <stdint.h>",
+      "",
+      "int main() {",
+      "    uint32_t $1;",
+      "    scanf(\"%d\", &$1);",
+      "",
+      "    ${2:/* code */}",
+      "",
+      "    return 0;",
+      "}"
+    ],
+    "description": ""
+  },
+
+  "dynamic-initialization": {
+    "prefix": ["new", "di"],
+    "body": "${1:type}* ${2:name} = (${1:type}*)malloc(sizeof(${1:type}));"
+  },
+
+  "Graph Library": {
+    "prefix": "gg",
+    "body": [
+      "struct Node",
+      "{",
+      "    int vertex;",
+      "    struct Node* next;",
+      "};",
+      "",
+      "struct Graph",
+      "{",
+      "    int numVertices;",
+      "    struct Node** adjList;",
+      "};",
+      "",
+      "",
+      "typedef struct Node Node;",
+      "typedef struct Graph Graph;",
+      "",
+      "Node* createNode(int v) {",
+      "    Node* node = (Node*)malloc(sizeof(Node));",
+      "    node->vertex = v;",
+      "    node->next = NULL;",
+      "",
+      "    return node;",
+      "}",
+      "",
+      "Graph* createGraph(int vertices) {",
+      "    Graph* graph = (Graph*)malloc(sizeof(Graph));",
+      "",
+      "    graph->numVertices = vertices;",
+      "    graph->adjList = malloc(vertices * sizeof(Node*));",
+      "",
+      "    for (int i = 0; i < vertices; ++i) {",
+      "        graph->adjList[i] = NULL;",
+      "    }",
+      "",
+      "    return graph;",
+      "}",
+      "",
+      "void addEdge(Graph* graph, int s, int d) {",
+      "    Node* node = createNode(d);",
+      "    node->next = graph->adjList[s];",
+      "    graph->adjList[s] = node;",
+      "",
+      "    node = createNode(s);",
+      "    node->next = graph->adjList[d];",
+      "    graph->adjList[d] = node;",
+      "}"
+    ],
+    "description": "Graph Library"
+  },
+  "BFS": {
+    "prefix": "bfs",
+    "body": [
+      "void BFS(Graph* graph, int startVertex) { // Uses a circular queue",
+      "    int q[N], front = 0, rear = 0;",
+      "",
+      "    // Enque startVertex",
+      "    q[rear++] = startVertex; ",
+      "    visited[startVertex] = 1;",
+      "",
+      "    while (front < rear) {",
+      "        // Dequeu",
+      "        int v = q[front++];",
+      "        front %= N;",
+      "",
+      "        for (Node* u = graph->adjList[v]; u != NULL; u = u->next) {",
+      "            if (!visited[u->vertex]) {",
+      "                visited[u->vertex] = 1;",
+      "",
+      "                q[rear++] = u->vertex;",
+      "                rear %= N;",
+      "            }",
+      "        }",
+      "",
+      "    }",
+      "}"
+    ],
+    "description": "BFS"
+  }
+}
