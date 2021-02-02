@@ -48,7 +48,6 @@ void traverse(struct Node* node) {
         node = node->next;
     }
 
-    printf("\n");
 }
 
 void LS(struct Node** head_ref, int lsb) {
