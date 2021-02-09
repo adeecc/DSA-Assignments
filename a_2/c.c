@@ -5,8 +5,6 @@
 
 #define N 2000
 
-uint8_t visited[N] = {0};
-
 struct Node {
     int vertex;
     struct Node* next;
@@ -60,6 +58,8 @@ void printGraph(Graph* graph, uint32_t v) {
 
 int BFS(Graph* graph, int startVertex,
         int endVertex) {  // Uses a circular queue
+
+    uint8_t visited[N] = {0};
     int q[N], front = 0, rear = 0;
 
     // Enque startVertex
@@ -85,7 +85,7 @@ int BFS(Graph* graph, int startVertex,
                 rear %= N;
             }
         }
-        printf("\n");
+        // printf("\n");
     }
 
     return 0;
@@ -113,19 +113,28 @@ int main() {
         adjMat[u][v] = adjMat[v][u] = 1;
     }
 
+    uint32_t flag = 0, u1, u2;
+
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
             if (!adjMat[i][j] && i != j) {
                 if (BFS(results, i, j)) {
                     printf("%d %d", i + 1, j + 1);
                     return 0;
-                } else {
+                } 
+                if (BFS(results, j, i)) {
                     printf("%d %d", j + 1, i + 1);
+                    return 0;
+                }
+                else {
+                    printf("-1");
                     return 0;
                 }
             }
         }
     }
+
+    printf("-1");
 
     return 0;
 }
