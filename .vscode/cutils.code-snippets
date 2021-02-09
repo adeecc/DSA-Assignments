@@ -20,6 +20,7 @@
     "body": [
       "#include <stdio.h>",
       "#include <stdint.h>",
+      "#include <stdlib.h>",
       "",
       "int main() {",
       "    uint32_t $1;",
@@ -38,8 +39,8 @@
     "body": "${1:type}* ${2:name} = (${1:type}*)malloc(sizeof(${1:type}));"
   },
 
-  "Graph Library": {
-    "prefix": "gg",
+  "Graph Simple": {
+    "prefix": "gs",
     "body": [
       "struct Node",
       "{",
@@ -90,6 +91,94 @@
     ],
     "description": "Graph Library"
   },
+  "graph-base": {
+    "prefix": "gb",
+    "body": [
+      "#include <stdio.h>",
+      "#include <stdint.h>",
+      "#include <stdlib.h>",
+      "",
+      "struct Node",
+      "{",
+      "    int vertex;",
+      "    struct Node* next;",
+      "};",
+      "",
+      "struct Graph",
+      "{",
+      "    int numVertices;",
+      "    struct Node** adjList;",
+      "};",
+      "",
+      "",
+      "typedef struct Node Node;",
+      "typedef struct Graph Graph;",
+      "",
+      "Node* createNode(int v) {",
+      "    Node* node = (Node*)malloc(sizeof(Node));",
+      "    node->vertex = v;",
+      "    node->next = NULL;",
+      "",
+      "    return node;",
+      "}",
+      "",
+      "Graph* createGraph(int vertices) {",
+      "    Graph* graph = (Graph*)malloc(sizeof(Graph));",
+      "",
+      "    graph->numVertices = vertices;",
+      "    graph->adjList = malloc(vertices * sizeof(Node*));",
+      "",
+      "    for (int i = 0; i < vertices; ++i) {",
+      "        graph->adjList[i] = NULL;",
+      "    }",
+      "",
+      "    return graph;",
+      "}",
+      "",
+      "void addEdge(Graph* graph, int s, int d) {",
+      "    Node* node = createNode(d);",
+      "    node->next = graph->adjList[s];",
+      "    graph->adjList[s] = node;",
+      "",
+      "    node = createNode(s);",
+      "    node->next = graph->adjList[d];",
+      "    graph->adjList[d] = node;",
+      "}",
+      "",
+      "int main() {",
+      "    uint32_t n, m, u, v;",
+      "    scanf(\"%d%*c%d\", &n, &m);",
+      "",
+      "    Graph* $1 = createGraph(n);",
+      "",
+      "    for (int i = 0; i < n; ++i) {",
+      "        scanf(\"%d %d\", &u, &v);",
+      "        addEdge($1, u, v);",
+      "    }",
+      "",
+      "    ",
+      "",
+      "    return 0;",
+      "}"
+    ],
+    "description": "graph-base"
+  },
+  "Print Graph": {
+    "prefix": "pg",
+    "body": [
+      "void printGraph(Graph* graph, uint32_t v) {",
+      "    for (uint32_t i = 0; i < v; ++i) {",
+      "        printf(\"%d:\", i);",
+      "        for (Node* node = graph->adjList[i]; node != NULL; node = node->next) {",
+      "            printf(\" -> %d\", node->vertex);",
+      "        }",
+      "",
+      "        printf(\"\\n\");",
+      "    }",
+      "}"
+    ],
+    "description": "Print Graph"
+  },
   "BFS": {
     "prefix": "bfs",
     "body": [
@@ -118,5 +207,22 @@
       "}"
     ],
     "description": "BFS"
-  }
+  },
+  "DFS": {
+    "prefix": "DFS",
+    "body": [
+      "int DFS(Graph* graph, int start, int visited[1000]) {",
+      "    visited[start] = 1;",
+      "",
+      "    printf(\"%d \", start);",
+      "",
+      "    for (Node* u = graph->adjList[start]; u != NULL; u = u->next) {",
+      "        if (!visited[u->vertex]) {",
+      "            DFS(graph, u->vertex, visited);",
+      "        }",
+      "    }",
+      "}"
+    ],
+    "description": "DFS"
+  },
 }

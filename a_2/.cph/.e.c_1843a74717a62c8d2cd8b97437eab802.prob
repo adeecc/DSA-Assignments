@@ -1,0 +1,1 @@
+{"name":"Local: e","url":"/home/adichopra/Dev/dsa/a_2/e.c","tests":[{"id":1612453983751,"input":"2 3\nabc","output":"aab\nbbb\nabb\nbab\nbaa\naba\nbba\naaa"},{"id":1612454256124,"input":"3 2\nabc","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/adichopra/Dev/dsa/a_2/e.c","group":"local","local":true}
