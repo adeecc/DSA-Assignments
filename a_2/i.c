@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-int cmpfunc(const void* a, const void* b) { return (*(int*)a - *(int*)b); }
-
 uint32_t nC2(uint32_t n) {
     return n * (n - 1) * 0.5;
 }

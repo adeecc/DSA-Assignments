@@ -1,0 +1,1 @@
+{"name":"Local: a","url":"/home/adichopra/Dev/dsa/a_4/a.c","tests":[{"id":1613476608887,"input":"3\nX B\nC X\nC A","output":"CXBA"},{"id":1613476619540,"input":"8\nR E\nA S\nB A\nE A\nL M\nA R\nB X\nX A","output":"ALIENS BE CRAZY"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/adichopra/Dev/dsa/a_4/a.c","group":"local","local":true}

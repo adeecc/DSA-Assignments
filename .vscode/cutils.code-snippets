@@ -18,20 +18,46 @@
   "base": {
     "prefix": "base",
     "body": [
-      "#include <stdio.h>",
       "#include <stdint.h>",
+      "#include <stdio.h>",
       "#include <stdlib.h>",
       "",
-      "int main() {",
-      "    uint32_t $1;",
-      "    scanf(\"%d\", &$1);",
+      "#define TRUE (uint8_t)1",
+      "#define FALSE (uint8_t)0",
       "",
-      "    ${2:/* code */}",
+      "#define ll int64_t",
+      "#define ull uint64_t",
+      "",
+      "",
+      "int main() {",
+      "    int $1, $2;",
+      "    scanf(\"%d %d\", &$1, &$2);",
+      "",
+      "    $3",
       "",
       "    return 0;",
       "}"
     ],
-    "description": ""
+    "description": "base"
+  },
+
+  "Array Input": {
+    "prefix": "arrin",
+    "body": [
+      "for (size_t $1 = 0; $1 < $2; $1++) {",
+      "    scanf(\"%d\", $3 + i);",
+      "}",
+      ""
+    ],
+    "description": "Array Input"
+  },
+
+  "Compare Function (Ascending)": {
+    "prefix": "cmpfunc",
+    "body": [
+      "int cmpfunc(const void* a, const void* b) { return (*(int*)a - *(int*)b); }"
+    ],
+    "description": "Compare Function (Ascending)"
   },
 
   "dynamic-initialization": {
