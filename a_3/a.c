@@ -5,10 +5,10 @@
 int cmpfunc(const void* a, const void* b) { return (*(int*)a - *(int*)b); }
  
 int main() {
-    uint32_t n, m, k;
+    int32_t n, m, k;
     scanf("%d %d %d", &n, &m, &k);
  
-    uint32_t A[n], S[m], satisfied = 0;
+    int32_t A[n], S[m], satisfied = 0;
  
     for (size_t i = 0; i < n; i++) {
         scanf("%d", A + i);
@@ -18,21 +18,22 @@ int main() {
         scanf("%d", S + i);
     }
  
-    qsort(A, n, sizeof(uint32_t), cmpfunc);
-    qsort(S, m, sizeof(uint32_t), cmpfunc);
+    qsort(A, n, sizeof(int32_t), cmpfunc);
+    qsort(S, m, sizeof(int32_t), cmpfunc);
+
+    int32_t i = 0, j = 0;
  
-    uint32_t front = 0;
+    while (i < n && j < m) {
+        int32_t diff = S[j] - A[i];
  
-    for (uint32_t i = 0; i < n; i++) {
-        for (uint32_t j = front; j < m; ++j) {
-            int32_t diff = A[i] - S[j];
-            if (diff <= k || diff >= -k) {
-                // printf("i: %d, j: %d\n", i, j);
-                satisfied++;
-                front = j + 1;
-                break;
-            }
-        }
+        if (diff <= k && diff >= -k) {
+            i++;
+            j++;
+            satisfied++;
+        } else if (diff < -k)
+            j++;
+        else
+            i++;
     }
  
     printf("%d", satisfied);
