@@ -1,4 +1,5 @@
-#include <math.h>
+// Based on Solution by Nandan H R.
+
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,13 +20,37 @@ typedef struct {
 } Point;
 
 Point points[N];
-double angles[N];
+
+int Quadrant(Point p) {
+    if (p.y == 0) {
+        if (p.x > 0)
+            return 1;
+        else
+            return 5;
+    } else if (p.y > 0) {
+        if (p.x > 0)
+            return 2;
+        else if (p.x == 0)
+            return 3;
+        else
+            return 4;
+    } else {
+        if (p.x < 0)
+            return 6;
+        else if (p.x == 0)
+            return 7;
+        else
+            return 8;
+    }
+}
 
 int cmpfunc(const void* a, const void* b) {
-    double diff = angles[((Point*)a)->idx] - angles[((Point*)b)->idx];
-    if (diff == 0) return 0;
-    if (diff < 0) return 1;
-    if (diff > 0) return -1;
+    Point p = *((Point*)a), q = *((Point*)b);
+
+    if ((p.x) * (q.x) > 0 && (p.y) * (q.y) > 0)
+        return (p.y * q.x - q.y * p.x);
+    else
+        return Quadrant(p) - Quadrant(q);
 }
 
 ll manhattanDistance(Point u, Point v) {
@@ -41,10 +66,6 @@ int main() {
     for (int i = 0; i < n; i++) {
         scanf("%d %d", &points[i].x, &points[i].y);
         points[i].idx = i;
-    }
-
-    for (int i = 0; i < n; i++) {
-        angles[i] = atan2(points[i].y, points[i].x);
     }
 
     qsort(points, n, sizeof(Point), cmpfunc);
