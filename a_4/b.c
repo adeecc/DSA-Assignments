@@ -35,11 +35,21 @@ int main() {
 
     while (numPlaying > 1) {
 
+        // printf("Current Round (%d): ", numPlaying);
+        // for (int i = 0; i < numPlaying; i++) {
+        //     printf("[%d] %d ", players[i].idx, players[i].strength);
+        // }
+        // printf("\n");
+
         if (numPlaying & 1) {
+            // printf("Updating Strength of last player: %d\n", players[numPlaying -1].strength);
             players[numPlaying - 1].strength += b;
         }
 
-        for (int i = 0; i < numPlaying; i += 2) {
+        int factor = !(numPlaying & 1);
+
+        for (int i = 0; i < numPlaying + factor; i += 2) {
+            // printf("Current Playing: %d vs %d\n", players[i].strength, players[i + 1].strength);
             if (players[i].strength == players[i + 1].strength) {
                 playing[i] = playing[i + 1] = 0;
                 numPlaying -= 2;
@@ -68,6 +78,7 @@ int main() {
         }
 
         prevPlaying = numPlaying;
+        // printf("\n\n");
     }
 
     if (numPlaying == 0) 
