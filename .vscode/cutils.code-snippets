@@ -176,7 +176,7 @@
       "",
       "    Graph* $1 = createGraph(n);",
       "",
-      "    for (int i = 0; i < n; ++i) {",
+      "    for (int i = 0; i < m; ++i) {",
       "        scanf(\"%d %d\", &u, &v);",
       "        addEdge($1, u, v);",
       "    }",
