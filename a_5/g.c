@@ -8,7 +8,7 @@
 #define ll long long int
 #define ull unsigned long long int
 
-#define N (int)10
+#define N (int)1e6
 
 typedef struct {
     ll key;

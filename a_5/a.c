@@ -11,20 +11,30 @@
 
 typedef struct {
     int idx;
-    ll P, E;
+    int P;  // Priority
+    ll E;   // Execution Time
 } Task;
 
 int size = 0;
 Task harr[N];
 
-int taskLT(Task l, Task r) {
-    if (l.P < r.P) return 1;
+// For the (22) time this is not a duplicate
 
-    if (l.P > r.P) return 0;
+// Using a min heap and extractinv minimums
+// More Important Task First. ie, Pi < Pj, then Pi is more important
+// Therefore: Order based on Priority with Lowers Priority at min
+// Lowest Execution Time thereafter
+// Lowest Index after
 
-    if (l.E < r.E) return 1;
+int cmpfunc(Task l, Task r) {
+    if (l.P != r.P)
+        return l.P - r.P;
 
-    return 0;
+    else if (l.E != r.E)
+        return l.E - r.E;
+
+    else
+        return l.idx - r.idx;
 }
 
 void swap(Task *a, Task *b) {
@@ -42,12 +52,8 @@ void heapify(int i) {
     int l = 2 * i + 1;
     int r = 2 * i + 2;
 
-    // if (l < size && taskLT(harr[l], harr[i])) smallest = l;
-    // if (r < size && taskLT(harr[r], harr[smallest])) smallest = r;
-
-    if (l < size) smallest = taskLT(harr[l], harr[i]) ? l : i;
-
-    if (r < size) smallest = taskLT(harr[r], harr[smallest]) ? r : smallest;
+    if (l < size && cmpfunc(harr[l], harr[smallest]) < 0) smallest = l;
+    if (r < size && cmpfunc(harr[r], harr[smallest]) < 0) smallest = r;
 
     if (smallest != i) {
         swap(harr + i, harr + smallest);
@@ -66,14 +72,6 @@ void insert(Task task) {
     for (int i = size / 2 - 1; i >= 0; i--) heapify(i);
 }
 
-void buildMinHeap() {
-    int i = (size - 1) / 2;
-    while (i >= 0) {
-        heapify(i);
-        i--;
-    }
-}
-
 Task extractMin() {
     if (!size) return (Task){.idx = -1, .E = -1, .P = -1};
 
@@ -90,7 +88,7 @@ Task extractMin() {
 
 void printharr() {
     for (int i = 0; i < size; ++i)
-        printf("[%d] %lld %lld\n", harr[i].idx, harr[i].P, harr[i].E);
+        printf("[%d] %d %lld\n", harr[i].idx, harr[i].P, harr[i].E);
     printf("\n");
 }
 
@@ -107,10 +105,13 @@ int main() {
         insert(task);
     }
 
-    for (int i = 0; i < k; i++) {
+    for (int i = 0; i < k - 1; i++) {
         task = extractMin();
         printf("%d ", task.idx);
     }
+
+    task = extractMin();
+    printf("%d", task.idx);
 
     return 0;
 }
