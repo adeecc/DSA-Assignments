@@ -43,12 +43,7 @@ int main() {
     if (n > 0)
         cRoot = binarySearch(0, n, n);
     else
-        cRoot = binarySearch(n, 0, n);
-
-    if (cRoot < 0) {
-        if (cRoot * cRoot * cRoot != n)
-            cRoot += 1;
-    }
+        cRoot = -binarySearch(0, -n, -n);
 
     printf("%lld", cRoot);
 
