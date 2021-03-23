@@ -33,7 +33,10 @@ int incrementStr(int i, int j) {
     assert(n >= 0);
 
     for (int k = 0; k < n; ++k) {
-        res[i + k]++;
+        if (res[i + k] == 'z')
+            res[i + k] = 'a';
+        else
+            res[i + k]++;
     }
 }
 
