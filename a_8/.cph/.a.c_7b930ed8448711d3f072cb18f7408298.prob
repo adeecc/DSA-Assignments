@@ -1,0 +1,1 @@
+{"name":"Local: a","url":"/home/adichopra/Dev/dsa/a_8/a.c","tests":[{"id":1617295149687,"input":"7\n1 5 4 3 8 10 2\n0 1 L\n0 2 R\n2 3 R\n1 4 R\n1 5 L\n5 6 L","output":"1 4 5 10 8 3 2"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/adichopra/Dev/dsa/a_8/a.c","group":"local","local":true}
