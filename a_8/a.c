@@ -54,27 +54,19 @@ Node* createTree(int n, int arr[n]) {
     return treeArr[0];
 }
 
-void swapArray(Node* a[N], Node* b[N]) {
-    for (int i = 0; i < N; i++) {
-        Node* temp = a[i];
-        a[i] = b[i];
-        b[i] = temp;
-    }
+void swapArray(Node*** a, Node*** b) {
+    Node **temp = *a;
+    *a = *b;
+    *b = temp;
 }
 
-// void swapArray(int **a, int **b) {
-//     int* temp = *a;
-//     *a = *b;
-//     *b = temp;
-// }
-
-void traverse(Node* node) {
+void traverse(Node* node, int n) {
     if (!node) return;
 
-    Node* currentLevel[N];
+    Node **currentLevel = (Node**)malloc(sizeof(Node*) * n);
     int currentLevelTop = -1;
 
-    Node* nextLevel[N];
+    Node **nextLevel = (Node**)malloc(sizeof(Node*) * n);
     int nextLevelTop = -1;
 
     currentLevel[++currentLevelTop] = node;
@@ -101,7 +93,7 @@ void traverse(Node* node) {
         if (currentLevelTop == -1) {
             leftOrRight = !leftOrRight;
 
-            swapArray(currentLevel, nextLevel);
+            swapArray(&currentLevel, &nextLevel);
 
             int temp = currentLevelTop;
             currentLevelTop = nextLevelTop;
@@ -134,7 +126,7 @@ int main() {
     // printTree(root);
     // printf("\n");
 
-    traverse(root);
+    traverse(root, n);
 
     return 0;
 }
