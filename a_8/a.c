@@ -121,10 +121,6 @@ int main() {
     }
 
     Node* root = createTree(n, arr);
-    // printf("Tree:\n");
-
-    // printTree(root);
-    // printf("\n");
 
     traverse(root, n);
 
