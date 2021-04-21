@@ -1,52 +1,98 @@
-#include <stdint.h>
+/**
+ * Aditya Chopra
+ * 2019A7PS0178H
+ * DSA Lab Evaluation 21 APr, 2021 17:01
+ID: 2019A7PS0178H
+PASS: IjP5DA
+
+Sample Testcase:
+
+3
+2 3 1
+2 1 3
+
+Output:
+
+2 3
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
-#include <limits.h>
+#define ll long long int
 
-#define TRUE (uint8_t)1
-#define FALSE (uint8_t)0
+int n;
 
-#define ll int64_t
-#define ull uint64_t
+typedef struct Node_t {
+    ll key;
+    struct Node_t *l, *r;
+} Node;
 
-#define INF (int)1e10
+Node* createNode(ll key) {
+    Node* node = (Node*)malloc(sizeof(Node));
 
-#define MIN(x, y) (x) > (y) ? (y) : (x)
+    node->key = key;
+    node->l = node->r = NULL;
+
+    return node;
+}
+
+int find(ll arr[n], int start, int end,
+         ll key) {  // Implement Hashmap to speed up
+    int i = start;
+    for (; i <= end; ++i) {
+        if (arr[i] == key) return i;
+    }
+
+    return -1;
+}
+
+Node* buildBTree(int start, int end, ll postOrder[n], ll inOrder[n],
+                 int* postIdx) {
+    if (start > end) return NULL;
+
+    // printf("Post idx: %d\n", *postIdx);
+
+    Node* root = createNode(postOrder[(*postIdx)]);
+    (*postIdx)--;
+
+    if (start == end) return root;
+
+    int inIdx = find(inOrder, start, end, root->key);
+    // printf("Inorder idx: %d\n", inIdx);
+
+    root->r = buildBTree(inIdx + 1, end, postOrder, inOrder, postIdx);
+    root->l = buildBTree(start, inIdx - 1, postOrder, inOrder, postIdx);
+
+    return root;
+}
+
+void printPreOrderLeaves(Node* root) {
+    if (root) {
+        if (root->l == NULL && root->r == NULL) {
+            printf("%lld ", root->key);
+        }
+        printPreOrderLeaves(root->l);
+        printPreOrderLeaves(root->r);
+    }
+}
 
 int main() {
-    int a, p, c;
-    scanf("%d %d %d", &a, &p, &c);
+    scanf("%d", &n);
 
-    uint32_t authors[p], inDegree[p], citation, hIndex[a];
+    ll postorder[n], inorder[n];
 
-    memset(inDegree, 0, sizeof(inDegree));
-    memset(hIndex, INF, sizeof(hIndex));
-
-    for (size_t i = 0; i < p; i++) {
-        scanf("%d", authors + i);
+    for (int i = 0; i < n; ++i) {
+        scanf("%lld", postorder + i);
     }
 
-    for (size_t i = 0; i < c; i++) {
-        scanf("%*d %d", &citation);
-        inDegree[citation]++;
+    for (int i = 0; i < n; ++i) {
+        scanf("%lld", inorder + i);
     }
 
-    int currentAuthor;
+    int postIdx = n - 1;
 
-    for (size_t i = 0; i < p; i++) {
-        // hIndex[authors[i]] = MIN(hIndex[authors[i]], inDegree[i]);
-
-        currentAuthor = authors[i];
-        if (hIndex[currentAuthor] > inDegree[i]) {
-            hIndex[currentAuthor] = inDegree[i];
-        }
-    }
-
-    for (size_t i = 0; i < a; i++) {
-        printf("%u ", hIndex[i]);
-    }
-
+    Node* root = buildBTree(0, n - 1, postorder, inorder, &postIdx);
+    printPreOrderLeaves(root);
     return 0;
 }
