@@ -4,5 +4,5 @@ mkdir $1 && cd $1
 
 for i in {a..j}
 do
-    touch $i.c
+    touch $i.cpp
 done
