@@ -1,0 +1,1 @@
+{"name":"Local: e","url":"/home/adichopra/dev/dsa/a_7/e.cpp","tests":[{"id":1619377673897,"input":"6\nadd 241\nquery 1\nadd 361\ndelete 241\nquery 2301","output":"1\n1"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/adichopra/dev/dsa/a_7/e.cpp","group":"local","local":true}

@@ -1,0 +1,1 @@
+{"name":"Local: f","url":"/home/adichopra/dev/dsa/a_7/f.cpp","tests":[{"id":1619453217313,"input":"3\n3\napple orange enemy\n6\napp potato open nose even night\n2\nyay yay","output":"Alice Bob Alice"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/adichopra/dev/dsa/a_7/f.cpp","group":"local","local":true}
