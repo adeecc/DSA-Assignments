@@ -12,7 +12,7 @@ typedef struct Node Node;
 void push(Node** head_ref, int new_data)
 {
     /* 1. allocate node */
-     Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+    Node *new_node = malloc(sizeof *new_node);
  
     /* 2. put in the data  */
     new_node->data = new_data;
